@@ -1,0 +1,6 @@
+model_name:frozen_model.pb
+input_height:227
+input_width:227
+input_channel:3
+batch_size:24
+class_num:2

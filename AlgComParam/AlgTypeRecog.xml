@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<PhoneLabel>
+    <confidence>0.6</confidence>
+    <Apple>
+        <series name="iPhone6">
+            <Gray>1</Gray>
+            <Silver>2</Silver>
+        </series>
+        <series name="iPhone6Plus">
+            <Gray>3</Gray>
+        </series>
+        <series name="iPhone6S">
+            <Gray>4</Gray>
+            <Silver>5</Silver>
+        </series>
+        <series name="iPhone6SPlus">
+            <Gray>6</Gray>
+        </series>
+        <series name="iPhone7">
+            <Gold>7</Gold>
+            <MatteBlack>8</MatteBlack>
+            <Red>9</Red>
+            <JetBlack>10</JetBlack>
+            <Silver>36</Silver>
+            <RoseGold>40</RoseGold>
+        </series>
+        <series name="iPhone7Plus">
+            <Gold>11</Gold>
+            <RoseGold>12</RoseGold>
+            <MatteBlack>13</MatteBlack>
+            <JetBlack>26</JetBlack>
+            <Red>31</Red>
+            <Silver>32</Silver>
+        </series>
+        <series name="iPhone8">
+            <Gold>14</Gold>
+            <SpaceGray>15</SpaceGray>
+            <Silver>16</Silver>
+            <Red>17</Red>
+        </series>
+        <series name="iPhone8Plus">
+            <Gold>18</Gold>
+            <SpaceGray>19</SpaceGray>
+            <Red>20</Red>
+            <Silver>21</Silver>
+        </series>
+        <series name="iPhoneX">
+            <SpaceGray>22</SpaceGray>
+            <Silver>23</Silver>
+        </series>
+        <series name="iPhoneXS">
+            <SpaceGray>24</SpaceGray>
+            <Gold>30</Gold>
+            <Silver>37</Silver>
+        </series>
+        <series name="iPhoneXSMax">
+            <Gold>25</Gold>
+            <Silver>38</Silver>
+            <SpaceGray>39</SpaceGray>
+        </series>
+        <series name="iPhoneXR">
+            <Black>27</Black>
+            <Blue>28</Blue>
+            <Coral>29</Coral>
+            <Red>33</Red>
+            <White>34</White>
+            <Yellow>35</Yellow>
+        </series>
+    </Apple>
+</PhoneLabel>

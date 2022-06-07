@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.05">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_update_off ()</l>
+<l>ROI_L := 0</l>
+<l>ROI_T := 0</l>
+<l>ROI_R := 0</l>
+<l>ROI_B := 0</l>
+<l>PhiRef := 0</l>
+<l>IMAGE_DIRName := ''</l>
+<l>ROICount := 0</l>
+<l>MODEL_FileName := ''</l>
+<l>ORI_FileName := ''</l>
+<l>MAXIMAGE_FileName := ''</l>
+<l>MINIMAGE_FileName := ''</l>
+<l>MODELCount := 0</l>
+<l>IMAGECount := 0</l>
+<l>Index := 0</l>
+<l>PAGEIMAGE_FileName := ''</l>
+<l>IsUseLoc := 0</l>
+<l>MODELCONTRAST := 50</l>
+<l>THRESLOW := 10</l>
+<l>THRESHIGH := 20</l>
+<l>MARKTYPE := 1</l>
+<l>get_current_dir (DirName)</l>
+<l>tuple_split (DirName, '/\\', Substrings2)</l>
+<l>tuple_remove (Substrings2, |Substrings2|-1, Reduced)</l>
+<l>for Index := 0 to |Substrings2|-2 by 1</l>
+<l>    PAGEIMAGE_FileName := PAGEIMAGE_FileName + Substrings2[Index] + '\\'</l>
+<l>endfor</l>
+<l>PAGEIMAGE_FileName := PAGEIMAGE_FileName+'LOC\\PAGE.bmp'</l>
+<l>open_file (DirName+'\\AlgParam_N6.ini', 'input', FileHandle)</l>
+<l>fread_line (FileHandle, OutLine, IsEOF)</l>
+<l>tuple_split(OutLine, '/\n', Substrings)</l>
+<l>while (IsEOF==0)</l>
+<l>    if(Substrings == '[BasicParam]')</l>
+<l>        while (IsEOF==0 and ROICount&lt;5)</l>
+<l>            fread_line(FileHandle, OutLine1, IsEOF)</l>
+<l>            tuple_split(OutLine1, '=/\n', Substrings1)</l>
+<l>            if(|Substrings1|&gt;1)</l>
+<l>                 if(Substrings1[0] == 'AlgInspRectLeft')</l>
+<l>                     tuple_number(Substrings1[1], ROI_L)</l>
+<l>                     ROICount := ROICount+1</l>
+<l>                 elseif(Substrings1[0] == 'AlgInspRectRight')</l>
+<l>                     tuple_number(Substrings1[1], ROI_R)</l>
+<l>                     ROICount := ROICount+1</l>
+<l>                 elseif(Substrings1[0] == 'AlgInspRectTop')</l>
+<l>                     tuple_number(Substrings1[1], ROI_T)</l>
+<l>                     ROICount := ROICount+1</l>
+<l>                 elseif(Substrings1[0] == 'AlgInspRectBottom')</l>
+<l>                     tuple_number(Substrings1[1], ROI_B)</l>
+<l>                     ROICount := ROICount+1</l>
+<l>                 elseif(Substrings1[0] == 'AlgInspName')</l>
+<l>                     IMAGE_DIRName := Substrings1[1]</l>
+<l>                     ROICount := ROICount+1</l>
+<l>                 endif                 </l>
+<l>            endif</l>
+<l>        endwhile</l>
+<l>        fread_line(FileHandle, OutLine, IsEOF)</l>
+<l>        tuple_split(OutLine, '/\n', Substrings)</l>
+<l>    elseif(Substrings == '[MATCH_PARAM]')</l>
+<l>        while (IsEOF==0 and MODELCount&lt;2)</l>
+<l>            fread_line(FileHandle, OutLine1, IsEOF)</l>
+<l>            tuple_split(OutLine1, '=/\n', Substrings1)</l>
+<l>            if(|Substrings1|&gt;1)</l>
+<l>                 if(Substrings1[0] == 'MatchParam_SMODEL_FILENAME')</l>
+<l>                     MODEL_FileName := Substrings1[1]</l>
+<l>                     MODELCount := MODELCount+1</l>
+<l>                 elseif(Substrings1[0] == 'MatchParam_VMODEL_FILENAME')</l>
+<l>                     ORI_FileName := Substrings1[1]</l>
+<l>                     MODELCount := MODELCount+1</l>
+<l>                 endif                 </l>
+<l>            endif</l>
+<l>        endwhile</l>
+<l>        fread_line(FileHandle, OutLine, IsEOF)</l>
+<l>        tuple_split(OutLine, '/\n', Substrings)</l>
+<l>    elseif(Substrings == '[MATCHMAXMINMODEL_PARAM]')</l>
+<l>        while (IsEOF==0 and IMAGECount&lt;5)</l>
+<l>            fread_line(FileHandle, OutLine1, IsEOF)</l>
+<l>            tuple_split(OutLine1, '=/\n', Substrings1)</l>
+<l>            if(|Substrings1|&gt;1)</l>
+<l>                 if(Substrings1[0] == 'strpHoImageMaxModelFileName')</l>
+<l>                     MAXIMAGE_FileName := Substrings1[1]</l>
+<l>                     IMAGECount := IMAGECount+1</l>
+<l>                 elseif(Substrings1[0] == 'strpHoImageMinModelFileName')</l>
+<l>                     MINIMAGE_FileName := Substrings1[1]</l>
+<l>                     IMAGECount := IMAGECount+1</l>
+<l>                 elseif(Substrings1[0] == 'nThreLow')</l>
+<l>                     tuple_number(Substrings1[1], THRESLOW)</l>
+<l>                     IMAGECount := IMAGECount+1</l>
+<l>                 elseif(Substrings1[0] == 'nThreHigh')</l>
+<l>                     tuple_number(Substrings1[1], THRESHIGH)</l>
+<l>                     IMAGECount := IMAGECount+1</l>
+<l>                 elseif(Substrings1[0] == 'nType')</l>
+<l>                     tuple_number(Substrings1[1], MARKTYPE)</l>
+<l>                     IMAGECount := IMAGECount+1</l>
+<l>                 endif                 </l>
+<l>            endif</l>
+<l>        endwhile</l>
+<l>        fread_line(FileHandle, OutLine, IsEOF)</l>
+<l>        tuple_split(OutLine, '/\n', Substrings)</l>
+<l>    else</l>
+<l>        fread_line(FileHandle, OutLine, IsEOF)</l>
+<l>        tuple_split(OutLine, '/\n', Substrings)</l>
+<l>    endif</l>
+<l>endwhile</l>
+<l>if(IsUseLoc == 1)</l>
+<l>    read_image(ImageBIG, PAGEIMAGE_FileName)</l>
+<l>    crop_rectangle1(ImageBIG, ROI_IMAGE, ROI_T, ROI_L, ROI_B, ROI_R)</l>
+<l>else</l>
+<l>    list_image_files ('D:/BZVisualInspect/UserData/DebugImage/AlgVarModelInspectTemp/苹果xr-White_KEY_L5', 'default', [], ImageFiles)</l>
+<l>    read_image(ROI_IMAGE, ImageFiles[0])</l>
+<l>endif</l>
+<l>write_image (ROI_IMAGE, 'bmp', 0, DirName+'\\'+ MAXIMAGE_FileName)</l>
+<l>write_image (ROI_IMAGE, 'bmp', 0, DirName+'\\'+ MINIMAGE_FileName)</l>
+<l>stop()</l>
+<l>if(MARKTYPE == 0)</l>
+<l>    get_domain (ROI_IMAGE, Domain)</l>
+<l>    area_center (Domain, Area, RowRef, ColumnRef)</l>
+<l>    OriRef[0] := RowRef</l>
+<l>    OriRef[1] := ColumnRef</l>
+<l>    OriRef[2] := PhiRef</l>
+<l>    write_tuple (OriRef, DirName+'\\'+ORI_FileName)</l>
+<l>    inspect_shape_model (ROI_IMAGE, ModelImages, ModelRegions, 1, MODELCONTRAST)</l>
+<l>    gen_contours_skeleton_xld (ModelRegions, Model, 1, 'filter')</l>
+<l>    create_shape_model (ROI_IMAGE, 5, rad(-10), rad(20), 'auto', 'none', 'use_polarity', MODELCONTRAST, 10, ShapeModelID)</l>
+<l>    write_shape_model (ShapeModelID, DirName+'\\'+ MODEL_FileName)</l>
+<l>else</l>
+<l>    mean_image(ROI_IMAGE, ImageMean, 31, 31)</l>
+<l>    dyn_threshold(ROI_IMAGE, ImageMean, RegionDynThresh, THRESLOW, 'dark')</l>
+<l>    threshold (ROI_IMAGE, Region, 0, THRESHIGH)</l>
+<l>    union2(RegionDynThresh, Region, RegionUnion)</l>
+<l>    closing_circle(RegionUnion, RegionUnion, 7.5)</l>
+<l>    connection(RegionUnion, RegionConnection)</l>
+<l>    select_shape_std (RegionConnection, SelectedRegions, 'max_area', 70)</l>
+<l>    fill_up (SelectedRegions, RegionFillUp)</l>
+<l>    area_center(RegionFillUp, Area, RowRef, ColumnRef)</l>
+<l>    elliptic_axis (RegionFillUp, NULL, NULL, PhiRef)</l>
+<l>    if (PhiRef &lt; rad(-45))</l>
+<l>       PhiRef := PhiRef + rad(180)</l>
+<l>    endif</l>
+<l>    OriRef[0] := RowRef</l>
+<l>    OriRef[1] := ColumnRef</l>
+<l>    OriRef[2] := PhiRef</l>
+<l>    write_tuple (OriRef, DirName+'\\'+ORI_FileName)</l>
+<l>endif</l>
+<l>get_image_size (ROI_IMAGE, Width, Height)</l>
+<l>zoom_image_size (ROI_IMAGE, ImageZoom, 512*Width/Height, 512, 'constant')</l>
+<l>get_image_size (ImageZoom, Width, Height)</l>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, Width, Height, 'black', WindowHandle)</l>
+<l>set_display_font (WindowHandle, 16, 'mono', 'true', 'false')</l>
+<l>dev_set_color ('red')</l>
+<l>dev_display (ROI_IMAGE)</l>
+<l>set_tposition (WindowHandle, 20, 20)</l>
+<l>dev_set_color ('blue')</l>
+<l>write_string (WindowHandle, 'RowOri = '+RowRef)</l>
+<l>set_tposition (WindowHandle, 80, 20)</l>
+<l>write_string (WindowHandle, 'ColOri = '+ColumnRef)</l>
+<l>set_tposition (WindowHandle, 140, 20)</l>
+<l>write_string (WindowHandle, 'PhiOri = '+PhiRef)</l>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
